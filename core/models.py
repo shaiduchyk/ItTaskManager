@@ -15,6 +15,7 @@ class Worker(AbstractUser):
     position = models.ForeignKey(
         Position,
         on_delete=models.CASCADE,
+        null=True,
         default=None,
     )
 
@@ -23,7 +24,7 @@ class Worker(AbstractUser):
         constraints = [
             UniqueConstraint(fields=["username"], name="unique_username")
         ]
-        ordering = ["last_name", "first_name", "position"]
+        ordering = ["last_name", "first_name", "position",]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} position: {self.position}"
@@ -34,26 +35,28 @@ class TaskType(models.Model):
 
 
 class Task(models.Model):
-    PRIORITY_LOW = 1
-    PRIORITY_MEDIUM = 2
-    PRIORITY_HIGH = 3
-    PRIORITY_URGENT = 4
-    PRIORITY_CRITICAL = 5
 
     PRIORITY_CHOICES = [
-        (PRIORITY_LOW, "Low"),
-        (PRIORITY_MEDIUM, "Medium"),
-        (PRIORITY_HIGH, "High"),
-        (PRIORITY_URGENT, "Urgent"),
-        (PRIORITY_CRITICAL, "Critical"),
+        ("Low", "Low"),
+        ("Medium", "Medium"),
+        ("High", "High"),
+        ("Urgent", "Urgent"),
+        ("Critical", "Critical"),
     ]
 
     task_name = models.CharField(max_length=255)
     description = models.TextField()
     deadline = models.DateField()
     is_completed = models.BooleanField(default=False)
-    priority = models.CharField(max_length=23, choices=PRIORITY_CHOICES, default="low")
-    task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE, related_name="tasks")
+    priority = models.CharField(
+        max_length=10,
+        choices=PRIORITY_CHOICES,
+    )
+    task_type = models.ForeignKey(
+        TaskType,
+        on_delete=models.CASCADE,
+        related_name="tasks"
+    )
     assignees = models.ManyToManyField(
         to=settings.AUTH_USER_MODEL,
         related_name="tasks"

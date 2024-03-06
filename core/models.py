@@ -61,7 +61,9 @@ class Task(models.Model):
     )
     assignees = models.ManyToManyField(
         to=settings.AUTH_USER_MODEL,
-        related_name="tasks"
+        related_name="tasks",
+        blank=True,
+        null=True,
     )
     created_at = models.DateTimeField(auto_now=True)
     done_at = models.DateTimeField(blank=True, null=True)

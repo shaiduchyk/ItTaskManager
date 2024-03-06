@@ -5,6 +5,9 @@ from core.views import (
     MyTasksListView,
     AllTasksListView,
     OurTeamsListView,
+    create_task,
+    take_task,
+    mark_as_done,
 )
 
 app_name = "core"
@@ -19,5 +22,13 @@ urlpatterns = [
          name="all-tasks"),
     path("our-teams/",
          OurTeamsListView.as_view(),
-         name="our-teams")
+         name="our-teams"),
+    path("create_task/",
+         create_task,
+         name="create-task"),
+    path("take-task/<int:task_id>/",
+         take_task, name="take-task"),
+    path("mark-as-done/<int:task_id>/",
+         mark_as_done,
+         name="mark-as-done"),
 ]

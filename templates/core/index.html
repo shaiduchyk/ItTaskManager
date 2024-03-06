@@ -5,9 +5,10 @@
 {% endblock %}
 
 {% block content %}
-    <ul class="cars__information">
-        <li class="information__item">Number of tasks: {{ num_tasks }}</li>
-        <li class="information__item">Number of completed tasks: {{ completed_tasks }}</li>
-        <li class="information__item">Last added task: {{ last_added_task }}</li>
-    </ul>
+  <h2>Welcome, {{ user.username }}!</h2>
+
+  <p>Total tasks: {{ all_tasks }}</p>
+  <p>Completed tasks: {{ completed_tasks_count }}</p>
+  <p>Incompleted tasks: {{ incompleted_tasks_count }}</p>
+
 {% endblock %}

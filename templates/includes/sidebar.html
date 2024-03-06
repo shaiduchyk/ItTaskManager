@@ -20,12 +20,17 @@
         <a class="nav-link" href="{% url 'core:our-teams' %}">Our Team</a>
       </li>
 
-      {% if user.is_authenticated %}
-        <li class="nav-item">User: <a class="nav-link" href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-      {% else %}
-        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-      {% endif %}
+{% if user.is_authenticated %}
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <li class="nav-item">User: <a class="nav-link" href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></li>
+    <li class="nav-item">
+      <input type="submit" class="nav-link btn btn-link" value="Logout">
+    </li>
+  </form>
+{% else %}
+  <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+{% endif %}
     </ul>
   </div>
 </nav>

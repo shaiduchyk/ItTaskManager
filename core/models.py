@@ -9,6 +9,9 @@ class Position(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "Position"
+
 
 class Worker(AbstractUser):
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
@@ -17,16 +20,25 @@ class Worker(AbstractUser):
 class TaskType(models.Model):
     type = models.CharField(max_length=255, unique=True)
 
+    def __str__(self):
+        return self.type
+
 
 class Task(models.Model):
+    PRIORITY_LOW = 1
+    PRIORITY_MEDIUM = 2
+    PRIORITY_HIGH = 3
+    PRIORITY_URGENT = 4
+    PRIORITY_CRITICAL = 5
 
     PRIORITY_CHOICES = [
-        ("Low",),
-        ("Medium",),
-        ("High",),
-        ("Urgent",),
-        ("Critical",),
+        (PRIORITY_LOW, "Low"),
+        (PRIORITY_MEDIUM, "Medium"),
+        (PRIORITY_HIGH, "High"),
+        (PRIORITY_URGENT, "Urgent"),
+        (PRIORITY_CRITICAL, "Critical"),
     ]
+
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     deadline = models.DateField()
@@ -35,3 +47,6 @@ class Task(models.Model):
     task_type = models.ForeignKey("TaskType", on_delete=models.CASCADE)
     assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="task")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} assigned to {self.assignees} with {self.priority} priority"

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Task Manager Home
+{% endblock %}
+
+{% block content %}
+    <ul class="cars__information">
+        <li class="information__item">Number of tasks: {{ num_tasks }}</li>
+        <li class="information__item">Number of completed tasks: {{ completed_tasks }}</li>
+        <li class="information__item">Last added task: {{ last_added_task }}</li>
+    </ul>
+{% endblock %}

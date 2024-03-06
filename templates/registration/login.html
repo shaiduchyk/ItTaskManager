@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h1>Login page</h1>
+
+  {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+
+  {% if not user.is_authenticated %}
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <input type="submit" value="Login" class="btn btn-primary" />
+      <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+  {% else %}
+    <h3>You are in the system now</h3>
+  {% endif %}
+{% endblock %}

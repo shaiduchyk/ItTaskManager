@@ -1,24 +1,31 @@
 <nav class="sidebar-nav navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="{% url 'taxi:index' %}">Taxi service</a>
+  <a class="navbar-brand" href="{% url 'core:index' %}">Task Manager</a>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav">
+    <ul class="navbar-nav flex-column">
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'taxi:index' %}">Home page</a>
+        <a class="nav-link" href="{% url 'core:index' %}">Home page</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/manufacturers/">Manufacturers</a>
+        <a class="nav-link" href="{% url 'core:my-tasks' %}">My tasks</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/cars/">Cars</a>
+        <a class="nav-link" href="{% url 'core:all-tasks' %}">All tasks</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/drivers/">Drivers</a>
+        <a class="nav-link" href="{% url 'core:our-teams' %}">Our Team</a>
       </li>
+
+      {% if user.is_authenticated %}
+        <li class="nav-item">User: <a class="nav-link" href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+      {% endif %}
     </ul>
   </div>
 </nav>

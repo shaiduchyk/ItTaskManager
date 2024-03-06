@@ -55,13 +55,16 @@ class Task(models.Model):
     task_type = models.ForeignKey(
         TaskType,
         on_delete=models.CASCADE,
-        related_name="tasks"
+        related_name="tasks",
+        blank=True,
+        null=True,
     )
     assignees = models.ManyToManyField(
         to=settings.AUTH_USER_MODEL,
         related_name="tasks"
     )
     created_at = models.DateTimeField(auto_now=True)
+    done_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         assignee_names = ", ".join(str(assignee) for assignee in self.assignees.all())

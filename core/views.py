@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Value
+from django.db.models.functions import Coalesce
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -25,7 +27,7 @@ def index(request: HttpRequest) -> HttpResponse:
     return render(request, "core/index.html", context)
 
 
-class MyTasksListView(generic.ListView):
+class MyTasksListView(LoginRequiredMixin, generic.ListView):
     model = Task
     template_name = 'core/my_tasks.html'
     context_object_name = 'task_list'
@@ -49,4 +51,32 @@ class MyTasksListView(generic.ListView):
 
         context["completed_tasks_count"] = self.completed_tasks_count
         context["incomplete_tasks_count"] = self.incomplete_tasks_count
+        return context
+
+
+class AllTasksListView(LoginRequiredMixin, generic.ListView):
+    model = Task
+    template_name = "all_tasks.html"
+    context_object_name = "task_list"
+
+    def get_queryset(self):
+        return Task.objects.annotate(
+            responsible=Coalesce('assignees__username', Value('Not assigned'))
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class OurTeamsListView(generic.ListView):
+    model = Worker
+    template_name = 'our_teams.html'
+    context_object_name = 'team_members'
+
+    def get_queryset(self):
+        return Worker.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         return context

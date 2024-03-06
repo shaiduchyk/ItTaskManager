@@ -16,6 +16,9 @@ class Position(models.Model):
 class Worker(AbstractUser):
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ["first_name", "last_name", "position"]
+
 
 class TaskType(models.Model):
     type = models.CharField(max_length=255, unique=True)

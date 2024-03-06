@@ -1,23 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<body>
-    <h1>Our Team Members</h1>
+  <h1>Our Team Members</h1>
 
-    {% if team_members %}
-        <ul>
-            {% for member in team_members %}
-                <li>
-                    <strong>Username:</strong> {{ member.username }}<br>
-                    <strong>Position:</strong> {{ member.position.name|default:"Not assigned" }}<br>
-                    <strong>First Name:</strong> {{ member.first_name }}<br>
-                    <strong>Last Name:</strong> {{ member.last_name }}<br>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No team members available.</p>
-    {% endif %}
-</body>
-</html>
-{% endblock %}
+  {% if team_members %}
+    <ul>
+      {% for member in team_members %}
+        <li>
+          <strong>Username:</strong> {{ member.username }}<br>
+          <strong>Position:</strong> {{ member.position.name|default:"Not assigned" }}<br>
+          <strong>First Name:</strong> {{ member.first_name }}<br>
+          <strong>Last Name:</strong> {{ member.last_name }}<br>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No team members available.</p>
+  {% endif %}
+
+  {% endblock %}

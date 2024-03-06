@@ -69,6 +69,7 @@ class MyTasksListView(LoginRequiredMixin, generic.ListView):
 class AllTasksListView(LoginRequiredMixin, generic.ListView):
     model = Task
     template_name = "all_tasks.html"
+    paginate_by = 5
     context_object_name = "task_list"
 
     def get_queryset(self):
@@ -84,6 +85,7 @@ class AllTasksListView(LoginRequiredMixin, generic.ListView):
 class OurTeamsListView(generic.ListView):
     model = Worker
     template_name = "our_teams.html"
+    paginate_by = 5
     context_object_name = "team_members"
 
     def get_queryset(self):

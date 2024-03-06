@@ -2,7 +2,7 @@
 
 {% block content %}
   <h2>All Tasks</h2>
-  <a href="{% url 'core:create-task' %}">Create Task</a>
+  <a href="{% url 'core:create-task' %}" class="btn btn-primary">Create Task</a>
   <ul>
     {% for task in task_list %}
       <li>
@@ -13,14 +13,14 @@
         {% if task.assignees.count == 0 %}
           <form method="post" action="{% url 'core:take-task' task.id %}">
             {% csrf_token %}
-            <input type="submit" value="Take Task">
+            <input type="submit" value="Take Task" class="btn btn-success">
           </form>
         {% endif %}
         {% if task.assignees.count == 1 and task.assignees.first.id == user.id %}
           {% if not task.done_at %}
             <form method="post" action="{% url 'core:mark-as-done' task.id %}">
               {% csrf_token %}
-              <input type="submit" value="Mark as Done">
+              <input type="submit" value="Mark as Done" class="btn btn-info">
             </form>
           {% endif %}
         {% endif %}
@@ -30,4 +30,5 @@
       </li>
     {% endfor %}
   </ul>
+
 {% endblock %}

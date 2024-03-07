@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Create a new Project</h2>
+
+  {% if user_position and user_position.name == "Project Manager" %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Create Task">
+    </form>
+{% else %}
+    <p>Sorry, you do not have permission to create projects.</p>
+{% endif %}
+{% endblock %}

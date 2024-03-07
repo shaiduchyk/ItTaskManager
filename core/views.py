@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Value, QuerySet
+from django.db.models import Value, QuerySet, Count
 from django.db.models.functions import Coalesce
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -7,10 +7,10 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.views.generic import CreateView
 
 from .models import Position, Worker, Task, TaskType, Project
-from .forms import TaskCreationForm
+from .forms import TaskCreationForm, ProjectForm
 
 
 @login_required
@@ -18,7 +18,6 @@ def index(request: HttpRequest) -> HttpResponse:
     user = request.user
 
     all_tasks = Task.objects.filter(assignees=user)
-
     completed_tasks = all_tasks.filter(is_completed=True)
     incompleted_tasks = all_tasks.filter(is_completed=False)
 
@@ -36,23 +35,22 @@ class MyTasksListView(LoginRequiredMixin, generic.ListView):
     template_name = "my_tasks.html"
     context_object_name = "task_list"
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.incomplete_tasks_count = None
         self.completed_tasks_count = None
 
-    def get_queryset(self) -> QuerySet:
-        completed_tasks_count = Task.objects.filter(
-            assignees=self.request.user, is_completed=True
-        ).count()
-        incomplete_tasks_count = Task.objects.filter(
-            assignees=self.request.user, is_completed=False
-        ).count()
+    def get_queryset(self):
+        tasks = Task.objects.filter(assignees=self.request.user)
 
-        self.completed_tasks_count = completed_tasks_count
-        self.incomplete_tasks_count = incomplete_tasks_count
+        tasks_counts = tasks.values("is_completed").annotate(count=Count("id"))
 
-        return Task.objects.filter(assignees=self.request.user)
+        for count_info in tasks_counts:
+            if count_info["is_completed"]:
+                self.completed_tasks_count = count_info["count"]
+            self.incomplete_tasks_count = count_info["count"]
+
+        return tasks
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,6 +65,7 @@ class AllTasksListView(LoginRequiredMixin, generic.ListView):
     template_name = "all_tasks.html"
     paginate_by = 5
     context_object_name = "task_list"
+    all_possible_tasks = Task.objects.count()
 
     def get_queryset(self) -> QuerySet:
         return Task.objects.annotate(
@@ -170,3 +169,36 @@ class WorkerProfileView(LoginRequiredMixin, generic.DetailView):
         context["incomplete_tasks"] = incomplete_tasks
 
         return context
+
+
+class ProjectListView(LoginRequiredMixin, generic.ListView):
+    model = Project
+    fields = "__all__"
+
+
+class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Project
+    success_url = reverse_lazy("core:project-list")
+
+
+class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Project
+    fields = [
+        "project_name",
+        "description",
+        "assignees",
+    ]
+    success_url = reverse_lazy("core:project-list")
+
+
+class ProjectCreateView(LoginRequiredMixin, CreateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = "project_form.html"
+    success_url = reverse_lazy("core:project-list")
+
+
+class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Project
+
+

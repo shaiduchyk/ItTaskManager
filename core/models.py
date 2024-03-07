@@ -92,9 +92,8 @@ class Project(models.Model):
         related_name="project"
     )
     task_list = models.ManyToManyField(Task, related_name="project")
+    deadline = models.DateField(blank=True, null=True)
 
-    def get_task_status_count(self):
-        completed_tasks = self.task_list.filter(is_completed=True).count()
-        incomplete_tasks = self.task_list.filter(is_completed=False).count()
-        return {"completed_tasks": completed_tasks,
-                "incomplete_tasks": incomplete_tasks}
+    def __str__(self):
+        return (f"{self.project_name} assigned to "
+                f"{self.assignees} with {self.task_list}")

@@ -7,9 +7,7 @@
     {% for task in task_list %}
       <li>
         {% if task.is_completed %}
-          {{ task.task_name }} - {{ task.description }} - {{ task.get_priority_display }}
-        {% else %}
-          {{ task.task_name }} (Incomplete)
+          {{ task.description }} <br>Done at: {{ task.done_at }}
         {% endif %}
       </li>
     {% endfor %}

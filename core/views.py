@@ -37,7 +37,7 @@ def index(request):
 
 class MyTasksListView(LoginRequiredMixin, generic.ListView):
     model = Task
-    template_name = "core/my_tasks.html"
+    template_name = "my_tasks.html"
     context_object_name = "task_list"
 
     def __init__(self, **kwargs):
@@ -104,6 +104,7 @@ def create_task(request):
             task = form.save(commit=False)
             task.created_by = request.user
             task.save()
+            form.save_m2m()
             messages.success(request, 'Task created successfully.')
             return redirect('core:all-tasks')
     else:
@@ -126,3 +127,9 @@ def mark_as_done(request, task_id):
     task.done_at = timezone.now()
     task.save()
     return redirect('core:all-tasks')
+
+
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Task
+    fields = "__all__"
+    success_url = reverse_lazy("core:all-tasks")

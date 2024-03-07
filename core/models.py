@@ -33,6 +33,9 @@ class Worker(AbstractUser):
 class TaskType(models.Model):
     type = models.CharField(max_length=63)
 
+    def __str__(self):
+        return self.type
+
 
 class Task(models.Model):
 
@@ -63,7 +66,6 @@ class Task(models.Model):
         to=settings.AUTH_USER_MODEL,
         related_name="tasks",
         blank=True,
-        null=True,
     )
     created_at = models.DateTimeField(auto_now=True)
     done_at = models.DateTimeField(blank=True, null=True)

@@ -8,6 +8,7 @@ from core.views import (
     create_task,
     take_task,
     mark_as_done,
+    TaskDeleteView,
 )
 
 app_name = "core"
@@ -31,4 +32,7 @@ urlpatterns = [
     path("mark-as-done/<int:task_id>/",
          mark_as_done,
          name="mark-as-done"),
+    path("task-delete/<int:pk>/delete/",
+         TaskDeleteView.as_view(),
+         name="task-delete"),
 ]

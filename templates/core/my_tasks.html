@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>My Tasks</h2>
-  <p>Completed Tasks: {{ completed_tasks_count }}</p>
+  {% if completed_tasks_count is not None %}
+    <p>Completed Tasks: {{ completed_tasks_count }}</p>
+  {% else %}
+    <p>No completed tasks</p>
+  {% endif %}
   <ul>
     {% for task in task_list %}
       <li>
@@ -12,7 +15,7 @@
       </li>
     {% endfor %}
   </ul>
-  <p>Incomplete Tasks: {{ incomplete_tasks_count }}</p>
+  <p>Incomplete Tasks: </p>
   <ul>
     {% for task in task_list %}
       {% if not task.is_completed %}

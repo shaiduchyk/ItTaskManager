@@ -16,7 +16,15 @@
   <ul>
     {% for task in task_list %}
       {% if not task.is_completed %}
-        <li>{{ task.task_name }} - {{ task.description }} - {{ task.get_priority_display }}</li>
+        <li>
+          {{ task.task_name }} - {{ task.description }} - {{ task.get_priority_display }}
+          {% if user in task.assignees.all %}
+            <form method="post" action="{% url 'core:mark-as-done' task.id %}">
+              {% csrf_token %}
+              <input type="submit" value="Mark as Done" class="btn btn-info">
+            </form>
+          {% endif %}
+        </li>
       {% endif %}
     {% endfor %}
   </ul>

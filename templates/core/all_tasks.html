@@ -16,9 +16,15 @@
               {% if forloop.last and forloop.first %} and {% else %} and {% endif %}
             {% endif %}
         {% endfor %}
+      {% if user in task.assignees.all %}
         <a href="{% url 'core:task-delete' pk=task.id %}" class="btn btn-danger link-to-page">
           Delete
         </a>
+        <a href="{% url 'core:task-update' pk=task.id %}" class="btn btn-warning">
+          Update
+        </a>
+      {% endif %}
+
         {% if task.assignees.count == 0 %}
           <form method="post" action="{% url 'core:take-task' task.id %}">
             {% csrf_token %}

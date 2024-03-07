@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import UniqueConstraint
+from django.urls import reverse
 
 
 class Position(models.Model):
@@ -28,6 +29,9 @@ class Worker(AbstractUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} position: {self.position}"
+
+    def get_absolute_url(self):
+        return reverse("core:worker-profile", kwargs={"pk": self.pk})
 
 
 class TaskType(models.Model):
@@ -71,7 +75,9 @@ class Task(models.Model):
     done_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        assignee_names = ", ".join(str(assignee) for assignee in self.assignees.all())
+        assignee_names = ", ".join(
+            str(assignee) for assignee in self.assignees.all()
+        )
         return (f"{self.task_name} assigned to {assignee_names}"
                 f" with {self.priority} priority")
 
@@ -90,4 +96,5 @@ class Project(models.Model):
     def get_task_status_count(self):
         completed_tasks = self.task_list.filter(is_completed=True).count()
         incomplete_tasks = self.task_list.filter(is_completed=False).count()
-        return {"completed_tasks": completed_tasks, "incomplete_tasks": incomplete_tasks}
+        return {"completed_tasks": completed_tasks,
+                "incomplete_tasks": incomplete_tasks}

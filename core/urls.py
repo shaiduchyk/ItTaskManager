@@ -9,6 +9,10 @@ from core.views import (
     take_task,
     mark_as_done,
     TaskDeleteView,
+    TaskUpdateView,
+    WorkerCreateView,
+    WorkerUpdateView,
+    WorkerProfileView,
 )
 
 app_name = "core"
@@ -35,4 +39,16 @@ urlpatterns = [
     path("task-delete/<int:pk>/delete/",
          TaskDeleteView.as_view(),
          name="task-delete"),
+    path("task-update/<int:pk>/update",
+         TaskUpdateView.as_view(),
+         name="task-update"),
+    path("worker_create/",
+         WorkerCreateView.as_view(),
+         name="worker-create"),
+    path("worker_update/<int:pk>/update",
+         WorkerUpdateView.as_view(),
+         name="worker-update"),
+    path("worker/<int:pk>/",
+         WorkerProfileView.as_view(),
+         name="worker-profile")
 ]

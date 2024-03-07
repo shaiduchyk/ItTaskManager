@@ -4,10 +4,12 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Welcome, {{ user.username }}!</h2>
+  <div class="d-flex flex-column align-items-center justify-content-center">
+    <h2>Welcome, {{ user.username }}!</h2>
 
   <p>Total tasks: {{ all_tasks }}</p>
   <p>Completed tasks: {{ completed_tasks_count }}</p>
   <p>Incompleted tasks: {{ incompleted_tasks_count }}</p>
 
+  </div>
 {% endblock %}

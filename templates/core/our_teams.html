@@ -1,25 +1,27 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
-  <h1>Our Team Members</h1>
+  <h1 class="text-center">Our Team Members</h1>
 
   {% if team_members %}
-    <ul>
+    <div class="row">
       {% for member in team_members %}
-        <li>
-          <strong>Username:</strong> {{ member.username }}<br>
-          <strong>Position:</strong> {{ member.position.name|default:"Not assigned" }}<br>
-          <strong>First Name:</strong> {{ member.first_name }}<br>
-          <strong>Last Name:</strong> {{ member.last_name }}<br>
-          <strong>Position:</strong> {{ member.position }} <br>
-          <a href="{% url 'core:worker-update' pk=member.id %}" class="btn btn-warning">Edit</a>
-        </li>
+        <div class="col-md-6 mb-4">
+          <div class="card" style="width: 100%;">
+            <img src="{% static 'avatar.png' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{ member.username }}</h5>
+              <p class="card-text">Let's introduce our {{ member.first_name }} {{ member.last_name }} on
+                {{ member.position.name|default:"Not assigned" }} position!</p>
+            </div>
+          </div>
+        </div>
       {% endfor %}
-    </ul>
+    </div>
   {% else %}
     <p>No team members available.</p>
   {% endif %}
 
-  <a href="{% url 'core:worker-create' %}" class="btn btn-success">Create New</a>
+  <a href="{% url 'core:worker-create' %}" class="btn btn-success float-right mt-3">Create New</a>
 
 {% endblock %}

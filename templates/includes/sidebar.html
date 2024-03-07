@@ -1,35 +1,34 @@
-<ul class="list-group">
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    <a class="nav-link" href="{% url 'core:index' %}">Home page</a>
-    <span class="badge badge-primary badge-pill"></span>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    <a class="nav-link" href="{% url 'core:project-list' %}">Projects</a>
-    <span class="badge badge-primary badge-pill"></span>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    <a class="nav-link" href="{% url 'core:my-tasks' %}">My tasks</a>
-    <span class="badge badge-primary badge-pill"></span>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    <a class="nav-link" href="{% url 'core:all-tasks' %}">All tasks</a>
-    <span class="badge badge-primary badge-pill"> {{ all_possible_tasks }}</span>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-    <a class="nav-link" href="{% url 'core:our-teams' %}">Our Team</a>
-    <span class="badge badge-primary badge-pill"></span>
-  </li>
-  <li>
-    {% if user.is_authenticated %}
-  <form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <li class="nav-item">User: <a class="nav-link" href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></li>
-    <li class="nav-item">
-      <input type="submit" class="nav-link btn btn-link" value="Logout">
-    </li>
-  </form>
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <a href="/" class="d-flex align-items-center col-md-1 mb-2 mb-md-0 text-dark text-decoration-none">
+      Task manager
+    </a>
+
+    <ul class="nav col-12 col-md-10 mb-2 justify-content-center mb-md-0">
+      <li><a class="nav-link" href="{% url 'core:index' %}">Home page</a></li>
+      <li><a class="nav-link" href="{% url 'core:project-list' %}">Projects</a></li>
+      <li><a class="nav-link" href="{% url 'core:my-tasks' %}">My tasks</a></li>
+      <li><a class="nav-link" href="{% url 'core:all-tasks' %}">All tasks</a></li>
+      <li><a class="nav-link" href="{% url 'core:our-teams' %}">Our Team</a></li>
+    </ul>
+
+   {% if user.is_authenticated %}
+     <div class="dropdown text-end col-md-1">
+     <form method="post" action="{% url 'logout' %}">
+       <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+            <li class="d-flex p-2 align-items-center nav-item">User: <a class="nav-link" href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="d-flex p-2 align-items-center nav-item">
+              <input type="submit" class="nav-link btn btn-link" value="Logout">
+            </li>
+          </ul>
+     </form>
+        </div>
 {% else %}
-  <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+     <div class="col-md-3">
+      <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+    </div>
 {% endif %}
-  </li>
-</ul>
+</header>

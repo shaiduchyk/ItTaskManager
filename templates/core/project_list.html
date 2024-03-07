@@ -1,31 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Project List</h2>
+  <h2 class="text-center mb-4">Project List</h2>
   
   {% if project_list %}
-    <ul>
-      {% for project in project_list %}
-        <li>
-          <strong>Project: {{ project.project_name }}</strong><br>
-          Description: {{ project.description }}<br>
-          Start Date: {{ project.start_date }}<br>
-          Deadline: {{ project.deadline }}<br>
-          
-          {% if user in project.members.all %}
-            <a href="{% url 'core:project-detail' pk=project.id %}" class="btn btn-primary">Details</a>
-            <a href="{% url 'core:project-update' pk=project.id %}" class="btn btn-warning">Update</a>
-          {% endif %}
-          
-          {% if user == project.created_by %}
-            <a href="{% url 'core:project-delete' pk=project.id %}" class="btn btn-danger">Delete</a>
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Project Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Deadline</th>
+          <th scope="col">Created at</th>
+          <th scope="col">Done at</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for project in project_list %}
+          <tr>
+            <td><strong>{{ project.project_name }}</strong></td>
+            <td>{{ project.description }}</td>
+            <td>{{ project.start_date }}</td>
+            <td>{{ project.deadline }}</td>
+            <td>{{ project.created_at }}</td>
+            <td>{{ project.done_at }}</td>
+            <td>
+              {% if user.position == "Project Manager" %}
+                {% if user in project.assignees.all %}
+                  <a href="{% url 'core:project-detail' pk=project.id %}" class="btn btn-primary">Details</a>
+                  <a href="{% url 'core:project-update' pk=project.id %}" class="btn btn-warning">Update</a>
+                  <a href="{% url 'core:project-delete' pk=project.id %}" class="btn btn-danger">Delete</a>
+                {% endif %}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   {% else %}
-    <p>No projects available.</p>
+    <p class="text-center">No projects available.</p>
   {% endif %}
   
-  <a href="{% url 'core:project-create' %}" class="btn btn-success">Create Project</a>
+  <a href="{% url 'core:project-create' %}" class="btn btn-success float-right mt-3">Create Project</a>
 {% endblock %}

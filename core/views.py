@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Value, QuerySet, Count
 from django.db.models.functions import Coalesce
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -124,7 +124,7 @@ def mark_as_done(request: HttpRequest, task_id: int) -> HttpResponse:
     task.is_completed = True
     task.done_at = timezone.now()
     task.save()
-    return redirect("core:all-tasks")
+    return HttpResponseRedirect(reverse_lazy(viewname="core:my-tasks"))
 
 
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -183,11 +183,8 @@ class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Project
-    fields = [
-        "project_name",
-        "description",
-        "assignees",
-    ]
+    form_class = ProjectForm
+    template_name = "project_form.html"
     success_url = reverse_lazy("core:project-list")
 
 

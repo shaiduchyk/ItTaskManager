@@ -91,9 +91,12 @@ class Project(models.Model):
         to=settings.AUTH_USER_MODEL,
         related_name="project"
     )
-    task_list = models.ManyToManyField(Task, related_name="project")
+    task_list = models.ManyToManyField(
+        Task,
+        related_name="project",
+    )
     deadline = models.DateField(blank=True, null=True)
+    done_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return (f"{self.project_name} assigned to "
-                f"{self.assignees} with {self.task_list}")
+        return ", ".join([str(assignees) for assignees in self.assignees.all()])

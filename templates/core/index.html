@@ -1,15 +1,29 @@
 {% extends "base.html" %}
 
 {% block title %}
+  <title>Welcome, {{ user.username }}!</title>
 {% endblock %}
 
 {% block content %}
   <div class="d-flex flex-column align-items-center justify-content-center">
     <h2>Welcome, {{ user.username }}!</h2>
 
-  <p>Total tasks: {{ all_tasks }}</p>
-  <p>Completed tasks: {{ completed_tasks_count }}</p>
-  <p>Incompleted tasks: {{ incompleted_tasks_count }}</p>
+    <p>Thank you for using our task management system. Here are some details about your tasks:</p>
 
+    <ul>
+      <li>Total tasks: {{ all_tasks }}</li>
+      <li>Completed tasks: {{ completed_tasks_count }}</li>
+      <li>Incomplete tasks: {{ incompleted_tasks_count }}</li>
+    </ul>
+
+    <p>
+      Our project aims to provide a user-friendly task management experience. Feel free to explore your user profile
+      to view and manage your tasks efficiently.
+    </p>
+
+    <p>
+      If you have any feedback or suggestions, please don't hesitate to reach out. We appreciate your use of our
+      platform and hope it enhances your productivity!
+    </p>
   </div>
 {% endblock %}

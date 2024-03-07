@@ -6,28 +6,46 @@
     <div class="row mt-4">
       <div class="col-md-6">
         <h2>Completed Tasks</h2>
-        <ul class="list-group">
-          {% for task in completed_tasks %}
-            <li class="list-group-item">
-              <strong>Task:</strong> {{ task.task_name }}<br>
-              <strong>Description:</strong> {{ task.description }}<br>
-              <strong>Deadline:</strong> {{ task.deadline }}<br>
-            </li>
-          {% endfor %}
-        </ul>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Task</th>
+              <th scope="col">Description</th>
+              <th scope="col">Deadline</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in completed_tasks %}
+              <tr>
+                <td>{{ task.task_name }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.deadline }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
 
       <div class="col-md-6">
         <h2>Incomplete Tasks</h2>
-        <ul class="list-group">
-          {% for task in incomplete_tasks %}
-            <li class="list-group-item">
-              <strong>Task:</strong> {{ task.task_name }}<br>
-              <strong>Description:</strong> {{ task.description }}<br>
-              <strong>Deadline:</strong> {{ task.deadline }}<br>
-            </li>
-          {% endfor %}
-        </ul>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Task</th>
+              <th scope="col">Description</th>
+              <th scope="col">Deadline</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in incomplete_tasks %}
+              <tr>
+                <td>{{ task.task_name }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.deadline }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

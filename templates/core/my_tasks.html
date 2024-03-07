@@ -1,34 +1,54 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {% if completed_tasks_count is not None %}
-    <p>Completed Tasks: {{ completed_tasks_count }}</p>
-  {% else %}
-    <p>No completed tasks</p>
-  {% endif %}
-  <ul>
-    {% for task in task_list %}
-      <li>
+  <h3 class="mt-4">Completed Tasks</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Done at</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in task_list %}
         {% if task.is_completed %}
-          {{ task.description }} <br>Done at: {{ task.done_at }}
+          <tr>
+            <td>{{ task.description }}</td>
+            <td>{{ task.done_at }}</td>
+          </tr>
         {% endif %}
-      </li>
-    {% endfor %}
-  </ul>
-  <p>Incomplete Tasks: </p>
-  <ul>
-    {% for task in task_list %}
-      {% if not task.is_completed %}
-        <li>
-          {{ task.task_name }} - {{ task.description }} - {{ task.get_priority_display }}
-          {% if user in task.assignees.all %}
-            <form method="post" action="{% url 'core:mark-as-done' task.id %}">
-              {% csrf_token %}
-              <input type="submit" value="Mark as Done" class="btn btn-info">
-            </form>
-          {% endif %}
-        </li>
-      {% endif %}
-    {% endfor %}
-  </ul>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3 class="mt-4">Incomplete Tasks</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Task Name</th>
+        <th>Description</th>
+        <th>Priority</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in task_list %}
+        {% if not task.is_completed %}
+          <tr>
+            <td>{{ task.task_name }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.get_priority_display }}</td>
+            <td>
+              {% if user in task.assignees.all %}
+                <form method="post" action="{% url 'core:mark-as-done' task.id %}">
+                  {% csrf_token %}
+                  <input type="submit" value="Mark as Done" class="btn btn-info">
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

@@ -1,49 +1,62 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>All Tasks</h2>
-  <a href="{% url 'core:create-task' %}" class="btn btn-primary">Create Task</a>
-  <ul>
-    {% for task in task_list %}
-      <li>
-        <strong>Task: {{ task.task_name }}</strong><br>
-        Description: {{ task.description }}<br>
-        Deadline: {{ task.deadline }}<br>
-        Responsible:
-        {% for assignee in task.assignees.all %}
-          {{ assignee.first_name }} {{ assignee.last_name }}, "{{ assignee.username }}"
-            {% if not forloop.last %}
-              {% if forloop.last and forloop.first %} and {% else %} and {% endif %}
+  <h2 class="text-center mb-4">All Tasks</h2>
+  <a href="{% url 'core:create-task' %}" class="btn btn-primary float-right">Create Task</a>
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th scope="col" class="text-center">Task Name</th>
+        <th scope="col" class="text-center">Description</th>
+        <th scope="col" class="text-center">Deadline</th>
+        <th scope="col" class="text-center">Responsible</th>
+        <th scope="col" class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in task_list %}
+        <tr>
+          <td><strong>{{ task.task_name }}</strong></td>
+          <td>{{ task.description }}</td>
+          <td>{{ task.deadline }}</td>
+          <td>
+            {% for assignee in task.assignees.all %}
+              {{ assignee.first_name }} {{ assignee.last_name }}, "{{ assignee.username }}"
+              {% if not forloop.last %},{% endif %}
+            {% endfor %}
+          </td>
+          <td>
+            {% if user in task.assignees.all %}
+              <a href="{% url 'core:task-delete' pk=task.id %}" class="btn btn-danger link-to-page">
+                Delete
+              </a>
+              <a href="{% url 'core:task-update' pk=task.id %}" class="btn btn-warning">
+                Update
+              </a>
             {% endif %}
-        {% endfor %}
-      {% if user in task.assignees.all %}
-        <a href="{% url 'core:task-delete' pk=task.id %}" class="btn btn-danger link-to-page">
-          Delete
-        </a>
-        <a href="{% url 'core:task-update' pk=task.id %}" class="btn btn-warning">
-          Update
-        </a>
-      {% endif %}
 
-        {% if task.assignees.count == 0 %}
-          <form method="post" action="{% url 'core:take-task' task.id %}">
-            {% csrf_token %}
-            <input type="submit" value="Take Task" class="btn btn-success">
-          </form>
-        {% endif %}
-        {% if task.assignees.count == 1 and task.assignees.first.id == user.id %}
-          {% if not task.done_at %}
-            <form method="post" action="{% url 'core:mark-as-done' task.id %}">
-              {% csrf_token %}
-              <input type="submit" value="Mark as Done" class="btn btn-info">
-            </form>
-          {% endif %}
-        {% endif %}
-        {% if task.done_at %} <br>
-          Task done at: {{ task.done_at }}
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ul>
+            {% if task.assignees.count == 0 %}
+              <form method="post" action="{% url 'core:take-task' task.id %}">
+                {% csrf_token %}
+                <input type="submit" value="Take Task" class="btn btn-success">
+              </form>
+            {% endif %}
 
+            {% if task.assignees.count == 1 and task.assignees.first.id == user.id %}
+              {% if not task.done_at %}
+                <form method="post" action="{% url 'core:mark-as-done' task.id %}">
+                  {% csrf_token %}
+                  <input type="submit" value="Mark as Done" class="btn btn-info">
+                </form>
+              {% endif %}
+            {% endif %}
+
+            {% if task.done_at %}
+              <br><strong>Task done at: {{ task.done_at }}</strong>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

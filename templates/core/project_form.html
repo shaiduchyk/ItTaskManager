@@ -1,13 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-  <h2>{% if form.instance.pk %}Update Project{% else %}Create Project{% endif %}</h2>
-  
-  <form method="post" enctype="multipart/form-data">
+  <h1>{{ object|yesno:"Update,Create" }} Project</h1>
+  <form action="" method="post" novalidate>
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Save" class="btn btn-success">
+
+    <input type="submit" value="Submit" class="btn btn-primary">
   </form>
-  
-  <a href="{% url 'core:project-list' %}" class="btn btn-primary">Back to Project List</a>
 {% endblock %}

@@ -8,6 +8,10 @@
     {{ form.as_p }}
     <input type="submit" value="Save" class="btn btn-success">
   </form>
+
+  {% if user.position == "Project Manager" and user in form.instance.assignees.all %}
+    <a href="{% url 'core:project-update' pk=form.instance.pk %}" class="btn btn-warning">Update</a>
+  {% endif %}
   
   <a href="{% url 'core:project-list' %}" class="btn btn-primary">Back to Project List</a>
 {% endblock %}

@@ -29,10 +29,12 @@ class ProjectForm(forms.ModelForm):
             "project_name",
             "description",
             "assignees",
-            "deadline"
+            "deadline",
+            "done_at"
         ]
 
     widgets = {
         "deadline": DateInput(attrs={'type': 'date'}),
         "assignees": forms.CheckboxSelectMultiple(),
+        "done_at": DateInput(attrs={'type': 'date'})
     }

@@ -10,9 +10,9 @@
           <div class="card" style="width: 100%;">
             <img src="{% static 'avatar.png' %}" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title">{{ member.username }}</h5>
+              <h5 class="card-title text-center" >{{ member.username }}</h5>
               <p class="card-text">Let's introduce our {{ member.first_name }} {{ member.last_name }} on
-                {{ member.position.name|default:"Not assigned" }} position!</p>
+                <strong>{{ member.position.name|default:"Not assigned" }}</strong> position!</p>
             </div>
           </div>
         </div>

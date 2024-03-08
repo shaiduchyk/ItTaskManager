@@ -19,7 +19,6 @@ from core.views import (
     ProjectUpdateView,
     ProjectCreateView,
     ProjectDetailView,
-    my_search_view,
 )
 
 app_name = "core"
@@ -73,7 +72,4 @@ urlpatterns = [
     path("projects_create/",
          ProjectCreateView.as_view(),
          name="project-create"),
-    path("search/",
-         my_search_view,
-         name="search"),
 ]

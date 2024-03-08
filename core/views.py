@@ -8,12 +8,10 @@ from django.utils import timezone
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView
-from haystack.views import SearchView
+
 
 from .models import Position, Worker, Task, TaskType, Project
 from .forms import TaskCreationForm, ProjectForm
-
-from haystack.query import SearchQuerySet
 
 
 @login_required
@@ -66,7 +64,7 @@ class MyTasksListView(LoginRequiredMixin, generic.ListView):
 class AllTasksListView(LoginRequiredMixin, generic.ListView):
     model = Task
     template_name = "all_tasks.html"
-    paginate_by = 5
+    paginate_by = 8
     context_object_name = "task_list"
     all_possible_tasks = Task.objects.count()
 
@@ -83,7 +81,7 @@ class AllTasksListView(LoginRequiredMixin, generic.ListView):
 class OurTeamsListView(generic.ListView):
     model = Worker
     template_name = "our_teams.html"
-    paginate_by = 5
+    paginate_by = 8
     context_object_name = "team_members"
 
     def get_queryset(self) -> QuerySet:
@@ -177,6 +175,7 @@ class WorkerProfileView(LoginRequiredMixin, generic.DetailView):
 class ProjectListView(LoginRequiredMixin, generic.ListView):
     model = Project
     fields = "__all__"
+    paginate_by = 7
 
 
 class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -200,13 +199,3 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
 class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     model = Project
-
-
-def my_search_view(request: HttpRequest) -> HttpResponse:
-    query = request.GET.get("q")
-    results = []
-
-    if query:
-        results = SearchQuerySet().models(Task).filter(content=query)
-
-    return render(request, "search.html", {"results": results})

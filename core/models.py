@@ -41,6 +41,23 @@ class TaskType(models.Model):
         return self.type
 
 
+class Project(models.Model):
+    project_name = models.CharField(max_length=120)
+    description = models.TextField()
+    is_completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now=True)
+    assignees = models.ManyToManyField(
+        to=settings.AUTH_USER_MODEL,
+        related_name="project"
+    )
+
+    deadline = models.DateField(blank=True, null=True)
+    done_at = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return ", ".join([str(assignees) for assignees in self.assignees.all()])
+
+
 class Task(models.Model):
 
     PRIORITY_CHOICES = [
@@ -73,6 +90,12 @@ class Task(models.Model):
     )
     created_at = models.DateTimeField(auto_now=True)
     done_at = models.DateTimeField(blank=True, null=True)
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name="tasks",
+        default=None,
+    )
 
     def __str__(self):
         assignee_names = ", ".join(
@@ -80,23 +103,3 @@ class Task(models.Model):
         )
         return (f"{self.task_name} assigned to {assignee_names}"
                 f" with {self.priority} priority")
-
-
-class Project(models.Model):
-    project_name = models.CharField(max_length=120)
-    description = models.TextField()
-    is_completed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now=True)
-    assignees = models.ManyToManyField(
-        to=settings.AUTH_USER_MODEL,
-        related_name="project"
-    )
-    task_list = models.ManyToManyField(
-        Task,
-        related_name="project",
-    )
-    deadline = models.DateField(blank=True, null=True)
-    done_at = models.DateTimeField(blank=True, null=True)
-
-    def __str__(self):
-        return ", ".join([str(assignees) for assignees in self.assignees.all()])

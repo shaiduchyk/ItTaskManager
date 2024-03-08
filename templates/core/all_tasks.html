@@ -16,7 +16,7 @@
     </thead>
     <tbody>
       {% for task in task_list %}
-        <tr>
+        <>
           <td class="text-center">
             <a href="{% url 'core:project-detail' pk=task.project.id %}">{{ task.project.project_name }}</a>
           </td>
@@ -29,8 +29,12 @@
               {% if not forloop.last %},{% endif %}
             {% endfor %}
           </td>
-          <td>
-          </td>
+          {% if user.position.name == "Project Manager" or user in task.assignees.all %}
+              <td>
+                <a href="{% url 'core:task-update' pk=task.id %}" class="btn btn-warning">Update</a> 
+                <a href="{% url 'core:task-delete' pk=task.id %}" class="btn btn-danger">Delete</a>
+              </td>
+          {% endif %}
         </tr>
       {% endfor %}
     </tbody>

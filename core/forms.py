@@ -18,7 +18,8 @@ class TaskCreationForm(forms.ModelForm):
 
         widgets = {
             "deadline": DateInput(attrs={"type": "date"}),
-            "assignees": forms.CheckboxSelectMultiple()
+            "assignees": forms.CheckboxSelectMultiple(),
+            "done_at": DateInput(attrs={'type': 'date'})
         }
 
 
@@ -33,8 +34,8 @@ class ProjectForm(forms.ModelForm):
             "done_at"
         ]
 
-    widgets = {
-        "deadline": DateInput(attrs={'type': 'date'}),
-        "assignees": forms.CheckboxSelectMultiple(),
-        "done_at": DateInput(attrs={'type': 'date'})
-    }
+        widgets = {
+            "deadline": DateInput(attrs={'type': 'date'}),
+            "assignees": forms.CheckboxSelectMultiple(),
+            "done_at": DateInput(attrs={'type': 'date'})
+        }

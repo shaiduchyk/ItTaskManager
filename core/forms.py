@@ -12,7 +12,8 @@ class TaskCreationForm(forms.ModelForm):
             "task_type",
             "deadline",
             "priority",
-            "assignees"
+            "assignees",
+            "project",
         ]
 
         widgets = {

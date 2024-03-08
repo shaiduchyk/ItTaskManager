@@ -25,12 +25,7 @@ class WorkerAdmin(UserAdmin):
     )
 
 
-@admin.register(Task)
-class TaskAdmin(admin.ModelAdmin):
-    search_fields = ("task_name, description",)
-    list_filter = ("task_name",)
-
-
+admin.site.register(Task)
 admin.site.register(TaskType)
 admin.site.register(Position)
 admin.site.register(Project)

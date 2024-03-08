@@ -55,7 +55,7 @@ class Project(models.Model):
     done_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return ", ".join([str(assignees) for assignees in self.assignees.all()])
+        return self.project_name
 
 
 class Task(models.Model):

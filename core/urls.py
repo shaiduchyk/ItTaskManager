@@ -1,5 +1,6 @@
 from django.urls import path
 
+
 from core.views import (
     index,
     MyTasksListView,
@@ -18,6 +19,7 @@ from core.views import (
     ProjectUpdateView,
     ProjectCreateView,
     ProjectDetailView,
+    my_search_view,
 )
 
 app_name = "core"
@@ -70,5 +72,8 @@ urlpatterns = [
          name="project-update"),
     path("projects_create/",
          ProjectCreateView.as_view(),
-         name="project-create")
+         name="project-create"),
+    path("search/",
+         my_search_view,
+         name="search"),
 ]

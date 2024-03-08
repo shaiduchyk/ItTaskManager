@@ -8,9 +8,12 @@ from django.utils import timezone
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView
+from haystack.views import SearchView
 
 from .models import Position, Worker, Task, TaskType, Project
 from .forms import TaskCreationForm, ProjectForm
+
+from haystack.query import SearchQuerySet
 
 
 @login_required
@@ -199,3 +202,11 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     model = Project
 
 
+def my_search_view(request: HttpRequest) -> HttpResponse:
+    query = request.GET.get("q")
+    results = []
+
+    if query:
+        results = SearchQuerySet().models(Task).filter(content=query)
+
+    return render(request, "search.html", {"results": results})

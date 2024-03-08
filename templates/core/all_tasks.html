@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2 class="text-center mb-4">All Tasks</h2>
-  <a href="{% url 'core:create-task' %}" class="btn btn-primary float-right">Create Task</a>
+  <div class="d-flex mb-4 justify-content-between align-items-center">
+    <h2 class="text-center">All Tasks</h2>
+    <a href="{% url 'core:create-task' %}" class="btn btn-primary float-right">Create Task</a>
+  </div>
   <table class="table mt-3">
     <thead>
       <tr>
@@ -11,12 +13,13 @@
         <th scope="col" class="text-center">Description</th>
         <th scope="col" class="text-center">Deadline</th>
         <th scope="col" class="text-center">Responsible</th>
+        <th scope="col" class="text-center">Status</th>
         <th scope="col" class="text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
       {% for task in task_list %}
-        <>
+        <tr>
           <td class="text-center">
             <a href="{% url 'core:project-detail' pk=task.project.id %}">{{ task.project.project_name }}</a>
           </td>
@@ -29,11 +32,18 @@
               {% if not forloop.last %},{% endif %}
             {% endfor %}
           </td>
+          <td class="text-center">
+            {% if task.is_completed %}
+              Done at: {{ task.done_at }}
+            {% else %}
+              In Progress
+            {% endif %}
+          </td>
           {% if user.position.name == "Project Manager" or user in task.assignees.all %}
-              <td>
-                <a href="{% url 'core:task-update' pk=task.id %}" class="btn btn-warning">Update</a> 
-                <a href="{% url 'core:task-delete' pk=task.id %}" class="btn btn-danger">Delete</a>
-              </td>
+            <td class="text-center">
+              <a href="{% url 'core:task-update' pk=task.id %}" class="btn btn-warning">Update</a>
+              <a href="{% url 'core:task-delete' pk=task.id %}" class="btn btn-danger">Delete</a>
+            </td>
           {% endif %}
         </tr>
       {% endfor %}

@@ -7,6 +7,15 @@ html {
   background-color: #6f94c6;
 }
 
-.sidebar {
-  background-color: #e0e0e0;
+.home-page {
+  width: 100%;
+  height: calc(100vh - 140px);
+}
+
+.home-page__text {
+  margin-left: 40px;
+}
+
+.sidebar .nav-link:hover {
+  text-decoration: underline;
 }

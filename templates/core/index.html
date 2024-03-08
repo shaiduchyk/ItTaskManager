@@ -1,29 +1,33 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}
   <title>Welcome, {{ user.username }}!</title>
 {% endblock %}
 
 {% block content %}
-  <div class="d-flex flex-column align-items-center justify-content-center">
-    <h2>Welcome, {{ user.username }}!</h2>
+  <div class="home-page d-flex align-items-center justify-content-between">
+   <img src="{% static 'images.jpg' %}" class="img-fluid" alt="...">
 
-    <p>Thank you for using our task management system. Here are some details about your tasks:</p>
+    <div class="home-page__text d-flex flex-column justify-content-center hero-section__text">
+      <h2 class="text-center">Welcome, {{ user.username }}!</h2>
 
-    <ul>
-      <li>Total tasks: {{ all_tasks }}</li>
-      <li>Completed tasks: {{ completed_tasks_count }}</li>
-      <li>Incomplete tasks: {{ incompleted_tasks_count }}</li>
-    </ul>
+      <p class="text-center">Thank you for using our task management system. Here are some details about your tasks:</p>
 
-    <p>
-      Our project aims to provide a user-friendly task management experience. Feel free to explore your user profile
-      to view and manage your tasks efficiently.
-    </p>
+      <ul>
+        <li class="text-center">Total tasks: {{ all_tasks }}</li>
+        <li class="text-center">Completed tasks: {{ completed_tasks_count }}</li>
+        <li class="text-center">Incomplete tasks: {{ incompleted_tasks_count }}</li>
+      </ul>
 
-    <p>
-      If you have any feedback or suggestions, please don't hesitate to reach out. We appreciate your use of our
-      platform and hope it enhances your productivity!
-    </p>
+      <p class="text-center">
+        Our project aims to provide a user-friendly task management experience. Feel free to explore your user profile
+        to view and manage your tasks efficiently.
+      </p>
+
+      <p class="text-center">
+        If you have any feedback or suggestions, please don't hesitate to reach out. We appreciate your use of our
+        platform and hope it enhances your productivity!
+      </p>
+    </div>
   </div>
 {% endblock %}

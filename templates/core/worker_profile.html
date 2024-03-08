@@ -2,16 +2,18 @@
 
 {% block content %}
   <div class="container mt-4">
-    <h1>User Profile: {{ user.username }}</h1>
+    <h1 class="mb-4 text-center">Your Profile: {{ user.username }}</h1>
     <div class="row mt-4">
       <div class="col-md-6">
-        <h2>Completed Tasks</h2>
+        <h2 class="mb-3 text-center">Completed Tasks</h2>
         <table class="table">
           <thead>
             <tr>
               <th scope="col">Task</th>
               <th scope="col">Description</th>
               <th scope="col">Deadline</th>
+              <th scope="col">Status</th>
+              <th scope="col">Done at</th>
             </tr>
           </thead>
           <tbody>
@@ -20,6 +22,8 @@
                 <td>{{ task.task_name }}</td>
                 <td>{{ task.description }}</td>
                 <td>{{ task.deadline }}</td>
+                <td><span class="badge badge-success">DONE</span></td>
+                <td>{{ task.done_at|default:"Not available" }}</td>
               </tr>
             {% endfor %}
           </tbody>
@@ -27,13 +31,15 @@
       </div>
 
       <div class="col-md-6">
-        <h2>Incomplete Tasks</h2>
+        <h2 class="mb-3 text-center">Incomplete Tasks</h2>
         <table class="table">
           <thead>
             <tr>
               <th scope="col">Task</th>
               <th scope="col">Description</th>
               <th scope="col">Deadline</th>
+              <th scope="col">Status</th>
+              <th scope="col">Done at</th>
             </tr>
           </thead>
           <tbody>
@@ -42,6 +48,8 @@
                 <td>{{ task.task_name }}</td>
                 <td>{{ task.description }}</td>
                 <td>{{ task.deadline }}</td>
+                <td><span class="badge badge-warning">IN PROGRESS</span></td>
+                <td>Not available</td>
               </tr>
             {% endfor %}
           </tbody>

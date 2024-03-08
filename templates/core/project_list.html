@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2 class="text-center mb-4">Project List</h2>
-
-  <div class="float-right mb-3">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-center mb-0">Project List</h2>
     <a href="{% url 'core:project-create' %}" class="btn btn-primary">Create Project</a>
   </div>
 
@@ -27,19 +26,23 @@
                 <strong>{{ project.project_name }}</strong>
               </a>
             </td>
-            <td class="text-center">{{ project.description }}</td>
+            <td class="text-center" data-toggle="tooltip" data-placement="top" title="{{ project.description }}">
+              {% with limited_description=project.description|truncatechars:50 %}
+                {{ limited_description }}
+              {% endwith %}
+            </td>
             <td class="text-center">{{ project.deadline }}</td>
             <td class="text-center">{{ project.created_at }}</td>
             <td class="text-center">
               {% if project.done_at %}
                 {{ project.done_at }}
               {% else %}
-                <strong> IN PROGRESS </strong>
+                <span class="badge badge-warning"> IN PROGRESS </span>
               {% endif %}
             </td>
             {% if user.position.name == "Project Manager"  %}
               {% if user in project.assignees.all %}
-                <td class="text-center">
+                <td class="text-center d-grid gap-2">
                   <a href="{% url 'core:project-update' pk=project.id %}" class="btn btn-warning">Update</a>
                   <a href="{% url 'core:project-delete' pk=project.id %}" class="btn btn-danger">Delete</a>
                 </td>
@@ -53,4 +56,9 @@
     <p class="text-center">No projects available.</p>
   {% endif %}
 
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
 {% endblock %}

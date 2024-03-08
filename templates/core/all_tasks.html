@@ -21,10 +21,14 @@
       {% for task in task_list %}
         <tr>
           <td class="text-center">
-            <a href="{% url 'core:project-detail' pk=task.project.id %}">{{ task.project.project_name }}</a>
+            <a href="{% url 'core:project-detail' pk=task.project.id %}"><strong>{{ task.project.project_name }}</strong></a>
           </td>
           <td class="text-center"><strong>{{ task.task_name }}</strong></td>
-          <td class="text-center">{{ task.description }}</td>
+          <td class="text-center" data-toggle="tooltip" data-placement="top" title="{{ task.description }}">
+            {% with limited_description=task.description|truncatechars:50 %}
+              {{ limited_description }}
+            {% endwith %}
+          </td>
           <td class="text-center">{{ task.deadline }}</td>
           <td class="text-center">
             {% for assignee in task.assignees.all %}
@@ -34,19 +38,29 @@
           </td>
           <td class="text-center">
             {% if task.is_completed %}
-              Done at: {{ task.done_at }}
+              <span class="badge badge-warning">Done</span> {{ task.done_at }}
             {% else %}
-              In Progress
+              <span class="badge badge-warning"> IN PROGRESS </span>
             {% endif %}
           </td>
-          {% if user.position.name == "Project Manager" or user in task.assignees.all %}
-            <td class="text-center">
+          <td class="text-center">
+            {% if user.position.name == "Project Manager" or user in task.assignees.all %}
               <a href="{% url 'core:task-update' pk=task.id %}" class="btn btn-warning">Update</a>
               <a href="{% url 'core:task-delete' pk=task.id %}" class="btn btn-danger">Delete</a>
-            </td>
-          {% endif %}
+
+              {% if not task.is_completed %}
+                <a href="{% url 'core:mark-as-done' task_id=task.id %}" class="btn btn-success">Mark As Done</a>
+              {% endif %}
+            {% endif %}
+          </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
+
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
 {% endblock %}

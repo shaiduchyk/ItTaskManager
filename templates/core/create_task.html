@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
-  <h2>Create Task</h2>
+  <h2 class="text-center">Create Task</h2>
 
-  {% if user_position and user_position.name == "Project Manager" %}
+  {% if user.position.name == "Project Manager" %}
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <input type="submit" value="Create Task">
     </form>
 {% else %}

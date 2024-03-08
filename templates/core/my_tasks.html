@@ -5,14 +5,22 @@
   <table class="table">
     <thead>
       <tr>
+        <th>Project</th>
+        <th>Task Name</th>
         <th>Description</th>
-        <th>Done at</th>
+        <th><span class="badge badge-warning">Done at</span></th>
       </tr>
     </thead>
     <tbody>
       {% for task in task_list %}
         {% if task.is_completed %}
           <tr>
+            <td>
+              <a href="{% url 'core:project-detail' pk=task.project.id %}">
+                <strong>{{ task.project.project_name }}</strong>
+              </a>
+            </td>
+            <td><strong>{{ task.task_name }}</strong></td>
             <td>{{ task.description }}</td>
             <td>{{ task.done_at }}</td>
           </tr>
@@ -25,7 +33,8 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Task Name</th>
+        <th><strong>Project</strong></th>
+        <th><strong>Task Name</strong></th>
         <th>Description</th>
         <th>Priority</th>
         <th>Actions</th>
@@ -35,7 +44,12 @@
       {% for task in task_list %}
         {% if not task.is_completed %}
           <tr>
-            <td>{{ task.task_name }}</td>
+            <td>
+              <a href="{% url 'core:project-detail' pk=task.project.id %}">
+                <strong>{{ task.project.project_name }}</strong>
+              </a>
+            </td>
+            <td><strong>{{ task.task_name }}</strong></td>
             <td>{{ task.description }}</td>
             <td>{{ task.get_priority_display }}</td>
             <td>

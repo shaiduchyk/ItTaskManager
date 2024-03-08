@@ -6,7 +6,7 @@
   <p>Description: {{ project.description }}</p>
   <p>Deadline: {{ project.deadline }}</p>
   <p>Created at: {{ project.created_at }}</p>
-  <p>Done at: {{ project.done_at }}</p>
+  <p><span class="badge badge-warning">Done at</span>: {{ project.done_at }}</p>
 
   <h3>Tasks:</h3>
   {% if project.tasks.all %}
@@ -35,7 +35,7 @@
               {% if task.is_completed %}
                 {{ task.done_at }}
               {% else %}
-                IN PROGRESS
+                <span class="badge badge-warning">IN PROGRESS</span>
               {% endif %}
             </td>
           </tr>

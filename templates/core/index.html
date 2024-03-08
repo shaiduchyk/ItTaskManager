@@ -5,29 +5,35 @@
 {% endblock %}
 
 {% block content %}
-  <div class="home-page d-flex align-items-center justify-content-between">
-   <img src="{% static 'images.jpg' %}" class="img-fluid" alt="...">
+  <div class="container mt-5">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <img src="{% static 'image.jpg' %}" class="img-fluid" alt="Welcome Image">
+      </div>
 
-    <div class="home-page__text d-flex flex-column justify-content-center hero-section__text">
-      <h2 class="text-center">Welcome, {{ user.username }}!</h2>
+      <div class="col-md-6">
+        <div class="text-center">
+          <h2 class="mb-4">Welcome, {{ user.username }}!</h2>
 
-      <p class="text-center">Thank you for using our task management system. Here are some details about your tasks:</p>
+          <p class="mb-3">Thank you for using our task management system. Here are some details about your tasks:</p>
 
-      <ul>
-        <li class="text-center">Total tasks: {{ all_tasks }}</li>
-        <li class="text-center">Completed tasks: {{ completed_tasks_count }}</li>
-        <li class="text-center">Incomplete tasks: {{ incompleted_tasks_count }}</li>
-      </ul>
+          <ul class="list-unstyled">
+            <li class="mb-2">Total tasks: {{ all_tasks }}</li>
+            <li class="mb-2">Completed tasks: {{ completed_tasks_count }}</li>
+            <li class="mb-4">Incomplete tasks: {{ incompleted_tasks_count }}</li>
+          </ul>
 
-      <p class="text-center">
-        Our project aims to provide a user-friendly task management experience. Feel free to explore your user profile
-        to view and manage your tasks efficiently.
-      </p>
+          <p class="mb-4">
+            Our project aims to provide a user-friendly task management experience. Feel free to explore your user
+            profile to view and manage your tasks efficiently.
+          </p>
 
-      <p class="text-center">
-        If you have any feedback or suggestions, please don't hesitate to reach out. We appreciate your use of our
-        platform and hope it enhances your productivity!
-      </p>
+          <p>
+            If you have any feedback or suggestions, please don't hesitate to reach out. We appreciate your use of
+            our platform and hope it enhances your productivity!
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}

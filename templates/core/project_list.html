@@ -18,7 +18,7 @@
       <tbody>
         {% for project in project_list %}
           <tr>
-            <td><strong>{{ project.project_name }}</strong></td>
+            <td><a href="{% url 'core:project-detail' pk=project.id %}"><strong>{{ project.project_name }}</strong></a></td>
             <td>{{ project.description }}</td>
             <td>{{ project.deadline }}</td>
             <td>{{ project.created_at }}</td>
@@ -26,9 +26,8 @@
             {% if user.position.name == "Project Manager"  %}
               {% if user in project.assignees.all %}
                 <td>
-                <a href="{% url 'core:project-detail' pk=project.id %}" class="btn btn-primary">Details</a>
-                <a href="{% url 'core:project-update' pk=project.id %}" class="btn btn-warning">Update</a>
-                <a href="{% url 'core:project-delete' pk=project.id %}" class="btn btn-danger">Delete</a>
+                  <a href="{% url 'core:project-update' pk=project.id %}" class="btn btn-warning">Update</a>
+                  <a href="{% url 'core:project-delete' pk=project.id %}" class="btn btn-danger">Delete</a>
                 </td>
               {% endif %}
             {% endif %}

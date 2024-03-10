@@ -25,7 +25,7 @@ class TaskModelTest(TestCase):
         task.assignees.add(self.user)
 
         expected_str = (
-            f"{task.task_name} assigned to   position: {self.user.position or 'None'}"
+            f"{task.task_name} assigned to   position: {self.user.position or "None"}"
             f" with {task.priority} priority"
         )
         self.assertEqual(str(task), expected_str)

@@ -3,22 +3,22 @@ from django.urls import path
 
 from core.views import (
     index,
-    MyTasksListView,
-    AllTasksListView,
-    OurTeamsListView,
     create_task,
-    take_task,
     mark_as_done,
-    TaskDeleteView,
-    TaskUpdateView,
-    WorkerCreateView,
-    WorkerUpdateView,
-    WorkerProfileView,
+    take_task,
+    AllTasksListView,
+    MyTasksListView,
     ProjectListView,
     ProjectDeleteView,
     ProjectUpdateView,
     ProjectCreateView,
     ProjectDetailView,
+    TaskDeleteView,
+    TaskUpdateView,
+    OurTeamsListView,
+    WorkerCreateView,
+    WorkerUpdateView,
+    WorkerProfileView,
 )
 
 app_name = "core"

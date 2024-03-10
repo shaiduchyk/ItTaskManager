@@ -1,5 +1,6 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.db.models import Value, QuerySet, Count
+from django.db.models import Value, QuerySet, Count, Prefetch
 from django.db.models.functions import Coalesce
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -163,10 +164,10 @@ class WorkerProfileView(LoginRequiredMixin, generic.DetailView):
 
         completed_tasks = Task.objects.filter(
             assignees=self.object, is_completed=True
-        )
+        ).select_related("project")
         incomplete_tasks = Task.objects.filter(
             assignees=self.object, is_completed=False
-        )
+        ).select_related("project")
 
         context["completed_tasks"] = completed_tasks
         context["incomplete_tasks"] = incomplete_tasks
@@ -190,8 +191,15 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
         if form.is_valid():
             return queryset.filter(
                 project_name__icontains=form.cleaned_data["project_name"]
+            ).prefetch_related(
+                Prefetch("assignees",
+                         queryset=get_user_model().objects.only("id",
+                                                                "username"))
             )
-        return queryset
+        return queryset.prefetch_related(
+            Prefetch("assignees",
+                     queryset=get_user_model().objects.only("id", "username"))
+        )
 
 
 class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):

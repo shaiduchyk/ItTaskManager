@@ -3,11 +3,8 @@
 {% block content %}
 
  <div class="d-flex justify-content-between align-items-center mb-4">
-  <div>
-    <h1>Our team</h1>
-  </div>
   {% if user.is_staff %}
-    <a href="{% url 'core:worker-create' %}" class="btn btn-primary">Create new member</a>
+    <a href="{% url 'core:worker-create' %}" class="btn btn-primary text-aling-right ml-auto">Create new member</a>
   {% endif %}
 </div>
 

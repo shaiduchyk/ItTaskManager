@@ -39,3 +39,12 @@ class ProjectForm(forms.ModelForm):
             "assignees": forms.CheckboxSelectMultiple(),
             "done_at": DateInput(attrs={'type': 'date'})
         }
+
+
+class ProjectSearchForm(forms.Form):
+    project_name = forms.CharField(
+        max_length=120,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search project"})
+    )

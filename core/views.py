@@ -7,11 +7,9 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView
 
-
-from .models import Position, Worker, Task, TaskType, Project
-from .forms import TaskCreationForm, ProjectForm
+from .models import Worker, Task, Project
+from .forms import TaskCreationForm, ProjectForm, ProjectSearchForm
 
 
 @login_required
@@ -78,7 +76,7 @@ class AllTasksListView(LoginRequiredMixin, generic.ListView):
         return context
 
 
-class OurTeamsListView(generic.ListView):
+class OurTeamsListView(LoginRequiredMixin, generic.ListView):
     model = Worker
     template_name = "our_teams.html"
     paginate_by = 8
@@ -125,7 +123,11 @@ def mark_as_done(request: HttpRequest, task_id: int) -> HttpResponse:
     task.is_completed = True
     task.done_at = timezone.now()
     task.save()
-    return HttpResponseRedirect(reverse_lazy(viewname="core:my-tasks"))
+    return HttpResponseRedirect(
+        request.META.get(
+            "HTTP_REFERER",
+            reverse_lazy(viewname="core:my-tasks"))
+    )
 
 
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -177,6 +179,20 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
     fields = "__all__"
     paginate_by = 7
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProjectListView, self).get_context_data(**kwargs)
+        context["search_form"] = ProjectSearchForm
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        form = ProjectSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                project_name__icontains=form.cleaned_data["project_name"]
+            )
+        return queryset
+
 
 class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Project
@@ -190,10 +206,10 @@ class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("core:project-list")
 
 
-class ProjectCreateView(LoginRequiredMixin, CreateView):
+class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
     model = Project
     form_class = ProjectForm
-    template_name = "project_form.html"
+    template_name = "create_project.html"
     success_url = reverse_lazy("core:project-list")
 
 

@@ -45,7 +45,7 @@ class Project(models.Model):
     project_name = models.CharField(max_length=120)
     description = models.TextField()
     is_completed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     assignees = models.ManyToManyField(
         to=settings.AUTH_USER_MODEL,
         related_name="project"
@@ -88,7 +88,7 @@ class Task(models.Model):
         related_name="tasks",
         blank=True,
     )
-    created_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     done_at = models.DateTimeField(blank=True, null=True)
     project = models.ForeignKey(
         Project,

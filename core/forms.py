@@ -4,6 +4,7 @@ from .models import Task, Project
 
 
 class TaskCreationForm(forms.ModelForm):
+
     class Meta:
         model = Task
         fields = [
@@ -24,6 +25,7 @@ class TaskCreationForm(forms.ModelForm):
 
 
 class ProjectForm(forms.ModelForm):
+
     class Meta:
         model = Project
         fields = [

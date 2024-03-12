@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models import UniqueConstraint
 from django.urls import reverse
 
 
@@ -22,9 +21,6 @@ class Worker(AbstractUser):
 
     class Meta:
         verbose_name_plural = "Workers"
-        constraints = [
-            UniqueConstraint(fields=["username"], name="unique_username")
-        ]
         ordering = ["last_name", "first_name", "position",]
 
     def __str__(self):

@@ -35,29 +35,28 @@ class MyTasksListView(LoginRequiredMixin, generic.ListView):
     template_name = "my_tasks.html"
     context_object_name = "task_list"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.incomplete_tasks_count = None
-        self.completed_tasks_count = None
-
-    def get_queryset(self):
-        tasks = Task.objects.filter(assignees=self.request.user)
-
-        tasks_counts = tasks.values("is_completed").annotate(count=Count("id"))
-
-        for count_info in tasks_counts:
-            if count_info["is_completed"]:
-                self.completed_tasks_count = count_info["count"]
-            self.incomplete_tasks_count = count_info["count"]
-
-        return tasks
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["completed_tasks_count"] = self.completed_tasks_count
-        context["incomplete_tasks_count"] = self.incomplete_tasks_count
+        tasks_counts = self.get_queryset().values(
+            "is_completed").annotate(count=Count("id"))
+
+        completed_tasks_count = 0
+        incomplete_tasks_count = 0
+
+        for count_info in tasks_counts:
+            if count_info["is_completed"]:
+                completed_tasks_count += count_info["count"]
+            else:
+                incomplete_tasks_count += count_info["count"]
+
+        context["completed_tasks_count"] = completed_tasks_count
+        context["incomplete_tasks_count"] = incomplete_tasks_count
+
         return context
+
+    def get_queryset(self):
+        return Task.objects.filter(assignees=self.request.user)
 
 
 class AllTasksListView(LoginRequiredMixin, generic.ListView):
@@ -82,9 +81,6 @@ class OurTeamsListView(LoginRequiredMixin, generic.ListView):
     template_name = "our_teams.html"
     paginate_by = 8
     context_object_name = "team_members"
-
-    def get_queryset(self) -> QuerySet:
-        return Worker.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

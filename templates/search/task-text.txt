@@ -1,5 +1,0 @@
-{{ object.task_name }}
-{{ object.description }}
-{{ object.worker.name }}
-{{ object.position.name }}
-{{ object.project.project_name }}

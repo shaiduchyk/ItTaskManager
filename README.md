@@ -1,6 +1,15 @@
 # ItTaskManager
 A Django-based application for efficient task tracking, assignment, and project management within IT teams.
 
+```shell
+   info about superuser:
+   Login: krixn
+   Password: 738059
+```
+
+# Feel free to use it 
+
+### [ittaskmanager-2.onrender.com](https://ittaskmanager-2.onrender.com)
 
 # This is sctructure for project:
 

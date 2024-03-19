@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <h2>Create a new Project</h2>
+
+  {% if user.position.name == "Project Manager" %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Create Project">
+    </form>
+  {% else %}
+    <p>Sorry, you do not have permission to create projects.</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  <title>Welcome, {{ user.username }}!</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <img src="{% static 'image.jpg' %}" class="img-fluid" alt="Welcome Image">
+      </div>
+
+      <div class="col-md-6">
+        <div class="text-center">
+          <h2 class="mb-4">Welcome, {{ user.username }}!</h2>
+
+          <p class="mb-3">Thank you for using our task management system. Here are some details about your tasks:</p>
+
+          <ul class="list-unstyled">
+            <li class="mb-2">Total tasks: {{ all_tasks }}</li>
+            <li class="mb-2">Completed tasks: {{ completed_tasks_count }}</li>
+            <li class="mb-4">Incomplete tasks: {{ incompleted_tasks_count }}</li>
+          </ul>
+
+          <p class="mb-4">
+            Our project aims to provide a user-friendly task management experience. Feel free to explore your user
+            profile to view and manage your tasks efficiently.
+          </p>
+
+          <p>
+            If you have any feedback or suggestions, please don't hesitate to reach out. We appreciate your use of
+            our platform and hope it enhances your productivity!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

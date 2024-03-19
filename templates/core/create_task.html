@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <h2 class="text-center">Create Task</h2>
+
+  {% if user.position.name == "Project Manager" %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value="Create Task">
+    </form>
+  {% else %}
+    <p>Sorry, you do not have permission to create tasks.</p>
+  {% endif %}
+{% endblock %}

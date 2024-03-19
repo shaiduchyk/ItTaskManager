@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="d-flex mb-4 justify-content-between align-items-center">
+    <h2 class="text-center">All Tasks</h2>
+    <a href="{% url 'core:create-task' %}" class="btn btn-primary float-right">Create Task</a>
+  </div>
+  <table class="table mt-3">
+    <thead>
+      <tr>
+        <th scope="col" class="text-center">Project</th>
+        <th scope="col" class="text-center">Task Name</th>
+        <th scope="col" class="text-center">Description</th>
+        <th scope="col" class="text-center">Deadline</th>
+        <th scope="col" class="text-center">Responsible</th>
+        <th scope="col" class="text-center">Status</th>
+        <th scope="col" class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in task_list %}
+        <tr>
+          <td class="text-center">
+            <a href="{% url 'core:project-detail' pk=task.project.id %}"><strong>{{ task.project.project_name }}</strong></a>
+          </td>
+          <td class="text-center"><strong>{{ task.task_name }}</strong></td>
+          <td class="text-center" data-toggle="tooltip" data-placement="top" title="{{ task.description }}">
+            {% with limited_description=task.description|truncatechars:50 %}
+              {{ limited_description }}
+            {% endwith %}
+          </td>
+          <td class="text-center">{{ task.deadline }}</td>
+          <td class="text-center">
+            {% for assignee in task.assignees.all %}
+              {{ assignee.first_name }} {{ assignee.last_name }}, "{{ assignee.username }}"
+              {% if not forloop.last %},{% endif %}
+            {% endfor %}
+          </td>
+          <td class="text-center">
+            {% if task.is_completed %}
+              <span class="badge badge-warning">Done</span> {{ task.done_at }}
+            {% else %}
+              <span class="badge badge-warning"> IN PROGRESS </span>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            {% if user.position.name == "Project Manager" or user in task.assignees.all %}
+              <a href="{% url 'core:task-update' pk=task.id %}" class="btn btn-warning">Update</a>
+              <a href="{% url 'core:task-delete' pk=task.id %}" class="btn btn-danger">Delete</a>
+
+              {% if not task.is_completed %}
+                <a href="{% url 'core:mark-as-done' task_id=task.id %}" class="btn btn-success">Mark As Done</a>
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+ <div class="d-flex justify-content-between align-items-center mb-4">
+  {% if user.is_staff %}
+    <a href="{% url 'core:worker-create' %}" class="btn btn-primary text-aling-right ml-auto">Create new member</a>
+  {% endif %}
+</div>
+
+  {% if team_members %}
+    <div class="row">
+      {% for member in team_members %}
+        <div class="col-md-3 mb-4">
+          <div class="card" style="width: 65%;">
+            <img src="{% static 'avatar.png' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title text-center">{{ member.username }}</h5>
+              <p class="card-text text-center">Let's introduce our {{ member.first_name }} {{ member.last_name }} on
+                <strong>{{ member.position.name|default:"Not assigned" }}</strong> position!</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No team members available.</p>
+  {% endif %}
+{% endblock %}

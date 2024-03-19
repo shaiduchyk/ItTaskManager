@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Project Details: {{ project.project_name }}</h2>
+
+  <p>Description: {{ project.description }}</p>
+  <p>Deadline: {{ project.deadline }}</p>
+  <p>Created at: {{ project.created_at }}</p>
+  <p><span class="badge badge-warning">Done at</span>: {{ project.done_at }}</p>
+
+  <h3>Tasks:</h3>
+  {% if project.tasks.all %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Task Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Deadline</th>
+          <th scope="col">Assignees</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for task in project.tasks.all %}
+          <tr>
+            <td><strong>{{ task.task_name }}</strong></td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.deadline }}</td>
+            <td>
+              {% for assignee in task.assignees.all %}
+                {{ assignee.username }}<br>
+              {% endfor %}
+            </td>
+            <td>
+              {% if task.is_completed %}
+                {{ task.done_at }}
+              {% else %}
+                <span class="badge badge-warning">IN PROGRESS</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No tasks associated with this project.</p>
+  {% endif %}
+
+  {% if user.position == "Project Manager" and user in project.assignees.all %}
+    <a href="{% url 'core:project-update' pk=project.pk %}" class="btn btn-warning">Update</a>
+  {% endif %}
+  
+  <a href="{% url 'core:project-list' %}" class="btn btn-primary">Back to Project List</a>
+{% endblock %}
